@@ -13,13 +13,43 @@ It supports memcache/redis singleton/redis cluster protocol all in one. RCProxy 
 
 ## Usage
 
+### Build
+
 ```bash
-cargo build --all --release && RUST_LOG=libaster=info RUST_BACKTRACE=1 ./target/release/rcproxy default.toml
+RUSTFLAGS="--cfg unsound_local_offset" cargo build --all --release
+```
+
+### Run
+
+```bash
+./target/release/rcproxy default.toml
+```
+
+### Install
+
+```bash
+sudo cp ./target/release/rcproxy /usr/local/bin/
+sudo mkdir /etc/rcproxy
+sudo cp default.toml /etc/rcproxy/
+sudo mkdir /var/log/rcproxy
+sudo cp service/systemd/rcproxy.service /lib/systemd/system/
+sudo systemctl enable rcproxy
+sudo systemctl start rcproxy
 ```
 
 ## Configuration
 
 ```Toml
+[log]
+level = "libaster=info" # "trace" "info" "debug" "warn" "error"
+ansi = true  # support ANSI colors
+stdout = false # print logs to stdout
+directory = "/var/log/rcproxy" # log file directory
+file_name = "rcproxy.log" # log file name
+
+[metrics]
+port = 2110
+
 [[clusters]]
 # name of the cluster. Each cluster means one front-end port.
 

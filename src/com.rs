@@ -151,6 +151,12 @@ impl From<num::ParseIntError> for AsError {
 #[derive(Deserialize, Debug, Clone)]
 pub struct Config {
     #[serde(default)]
+    pub log: LogConfig,
+    
+    #[serde(default)]
+    pub metrics: MetricsConfig,
+    
+    #[serde(default)]
     pub clusters: Vec<ClusterConfig>,
 }
 
@@ -203,6 +209,20 @@ impl Config {
         let thread_str = env::var(ENV_ASTER_DEFAULT_THREADS).unwrap_or_else(|_| "4".to_string());
         thread_str.parse::<usize>().unwrap_or_else(|_| 4)
     }
+}
+
+#[derive(Clone, Debug, Deserialize, Default)]
+pub struct LogConfig {
+    pub level: String,
+    pub ansi: bool,
+    pub stdout: bool,
+    pub directory: String,
+    pub file_name: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Default)]
+pub struct MetricsConfig {
+    pub port: usize,
 }
 
 #[derive(Deserialize, Debug, Clone, Copy)]

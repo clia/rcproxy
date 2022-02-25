@@ -1,3 +1,13 @@
+[log]
+level = "libaster=info" # "trace" "info" "debug" "warn" "error"
+ansi = true  # support ANSI colors
+stdout = false # print logs to stdout
+directory = "/var/log/rcproxy" # log file directory
+file_name = "rcproxy.log" # log file name
+
+[metrics]
+port = 2110
+
 [[clusters]]
     name = "test-dns-resolver"
     listen_addr = "0.0.0.0:6379"

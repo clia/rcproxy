@@ -302,6 +302,7 @@ impl Command {
 
     pub fn parse_cmd(buf: &mut BytesMut) -> Result<Option<Cmd>, AsError> {
         let msg = MessageMut::parse(buf)?;
+        log::trace!("msg: {:?}", msg);
         Ok(msg.map(Into::into))
     }
 
