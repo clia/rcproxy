@@ -2,6 +2,8 @@
 
 RCProxy [![LOC](https://tokei.rs/b1/github/clia/rcproxy)](https://github.com/clia/rcproxy)
 
+Forked from [https://github.com/wayslog/aster](https://github.com/wayslog/aster). Thanks!
+
 ======================
 
 RCProxy is a lightweight, fast but powerful Redis Cluster Proxy written in Rust.
@@ -41,9 +43,9 @@ sudo systemctl start rcproxy
 
 ```Toml
 [log]
-level = "libaster=info" # "trace" "info" "debug" "warn" "error"
+level = "libaster=info" # "trace" "debug" "info" "warn" "error"
 ansi = true  # support ANSI colors
-stdout = false # print logs to stdout
+stdout = false # print logs to stdout, not to log files
 directory = "/var/log/rcproxy" # log file directory
 file_name = "rcproxy.log" # log file name
 
@@ -52,15 +54,12 @@ port = 2110
 
 [[clusters]]
 # name of the cluster. Each cluster means one front-end port.
-
 name="test-redis-cluster"
 
 # listen_addr means the cluster font end serve address.
-
 listen_addr="0.0.0.0:9001"
 
 # cache_type only support memcache|redis|redis_cluster
-
 cache_type="redis_cluster"
 
 # servers means cache backend. support two format:
@@ -80,25 +79,20 @@ cache_type="redis_cluster"
 # servers = ["127.0.0.1:7000", "127.0.0.1:7001"]
 #
 # which means the seed nodes to connect to redis cluster.
-
-servers = ["127.0.0.1:7000", "127.0.0.1:7001"]
+servers = ["127.0.0.1:7000", "127.0.0.1:7001", "127.0.0.1:7002", "127.0.0.1:7003", "127.0.0.1:7004", "127.0.0.1:7005"]
 
 # Work thread number, it's suggested as the number of your cpu(hyper-thread) number.
-
 thread = 1
 
 # ReadTimeout is the socket read timeout which effects all in the socket in millisecond
-
 read_timeout = 2000
 
 # WriteTimeout is the socket write timeout which effects all in the socket in millisecond
-
 write_timeout = 2000
 
 ############################# Cluster Mode Special #######################################################
 # fetch means fetch interval for backend cluster to keep cluster info become newer.
 # default 10 * 60 seconds
-
 fetch = 600
 
 
@@ -109,12 +103,13 @@ read_from_slave = true
 # ping_fail_limit means when ping fail reach the limit number, the node will be ejected from the cluster
 # until the ping is ok in future.
 # if ping_fali_limit == 0, means that close the ping eject feature.
-
 ping_fail_limit=3
 
 # ping_interval means the interval of each ping was send into backend node in millisecond.
-
 ping_interval=10000
+
+auth = "" # mypassw
+
 ```
 
 ## changelog

@@ -1,6 +1,12 @@
 
 # change log
 
+# 2.1.0
+
+- log use tracing
+- can config metrics port
+- add systemd service config
+
 # 2.0.0
 
 - maintained by clia
