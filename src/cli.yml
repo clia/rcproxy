@@ -1,6 +1,6 @@
-name: aster
-author: wayslog. <zxs867179@gmail.com>
-about: Aster is a light, fast and powerful cache proxy written in rust.
+name: rcproxy
+author: clia <clia@163.com>
+about: RCProxy is a lightweight, fast and powerful Redis Cluster Proxy written in Rust.
 args:
   - config:
       value_name: FILE
