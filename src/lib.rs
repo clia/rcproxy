@@ -150,7 +150,7 @@ fn init_tracing(
     directory: &str,
     file_name: &str,
 ) -> WorkerGuard {
-    let file_appender = clia_tracing_appender::rolling::hourly(directory, file_name, true, true);
+    let file_appender = clia_tracing_appender::rolling::daily(directory, file_name, true, true);
     let (file_writer, guard) = clia_tracing_appender::non_blocking(file_appender);
 
     let offset = UtcOffset::current_local_offset().expect("should get local offset!");
