@@ -6,6 +6,7 @@
 - log use tracing
 - can config metrics port
 - add systemd service config
+- change tracing-appender rolling to daily
 
 # 2.0.0
 
