@@ -7,6 +7,7 @@
 - can config metrics port
 - add systemd service config
 - change tracing-appender rolling to daily
+- update tracing-appender for some bug fixes
 
 # 2.0.0
 
