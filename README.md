@@ -18,7 +18,7 @@ It supports memcache/redis singleton/redis cluster protocol all in one. RCProxy 
 ### Build
 
 ```bash
-RUSTFLAGS="--cfg unsound_local_offset" cargo build --all --release
+cargo build --all --release
 ```
 
 ### Run

@@ -62,9 +62,10 @@ hotwatch = "0.4.3"
 chrono = "0.4.15"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.9", features = ["std", "fmt", "env-filter", "tracing-log", "time", "local-time"] }
-clia-tracing-appender = "0.2.0"
+tracing-appender = { package = "clia-tracing-appender", version = "0.2.2" }
 tracing-log = { version = "0.1.2", features = ["log-tracer"] }
 time = { version = "0.3", features = ["macros", "local-offset"] }
+clia-time = { version = "0.3", features = ["macros", "local-offset"] }
 
 [profile.release]
 debug = true

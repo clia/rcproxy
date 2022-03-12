@@ -35,10 +35,11 @@ use failure::Error;
 use com::meta::{load_meta, meta_init};
 use com::ClusterConfig;
 use metrics::thread_incr;
-use clia_tracing_appender::non_blocking::WorkerGuard;
+use tracing_appender::non_blocking::WorkerGuard;
 use tracing_subscriber::fmt::time::OffsetTime;
 use time::macros::format_description;
 use time::UtcOffset;
+use clia_time::UtcOffset as CliaUtcOffset;
 
 pub fn run() -> Result<(), Error> {
     // env_logger::Env::default().filter_or(env_logger::DEFAULT_FILTER_ENV, "info");
@@ -150,10 +151,11 @@ fn init_tracing(
     directory: &str,
     file_name: &str,
 ) -> WorkerGuard {
-    let file_appender = clia_tracing_appender::rolling::daily(directory, file_name, true, true);
-    let (file_writer, guard) = clia_tracing_appender::non_blocking(file_appender);
+    let file_appender = tracing_appender::rolling::daily(directory, file_name);
+    let (file_writer, guard) = tracing_appender::non_blocking(file_appender);
 
-    let offset = UtcOffset::current_local_offset().expect("should get local offset!");
+    let offset_sec = CliaUtcOffset::current_local_offset().expect("Can not get local offset!").whole_seconds();
+    let offset = UtcOffset::from_whole_seconds(offset_sec).expect("Can not from whole seconds!");
     let timer = OffsetTime::new(
         offset, 
         format_description!("[year]-[month]-[day] [hour]:[minute]:[second].[subsecond digits:3]"),
