@@ -256,6 +256,15 @@ impl Cmd {
         // and other conditions
         true
     }
+
+    pub fn change_info_resp(&mut self) {
+        let mut cmd = self.borrow_mut();
+        if cmd.ctype.is_info() {
+            if let Some(msg) = &mut cmd.reply {
+                msg.replace_info_resp();
+            }
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -352,6 +361,7 @@ impl Command {
     }
 
     fn reply_raw(&self, buf: &mut BytesMut) -> Result<usize, AsError> {
+        log::trace!("buf: {:?}", buf);
         self.reply
             .as_ref()
             .map(|x| x.save(buf))
@@ -423,6 +433,8 @@ impl Command {
     fn key_pos(&self) -> usize {
         if self.ctype.is_eval() {
             return KEY_EVAL_POS;
+        } else if self.ctype.is_info() {
+            return COMMAND_POS;
         }
         KEY_RAW_POS
     }
@@ -719,9 +731,11 @@ impl From<MessageMut> for Cmd {
                     cmd.unset_error();
                 } else {
                     // unsupport commands
+                    trace!("unsupport commands");
                 }
             }
         }
+        trace!("cmd: {:?}", cmd);
         cmd.into_cmd(notify)
     }
 }

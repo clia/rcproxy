@@ -137,7 +137,7 @@ impl Cluster {
                     Self::silence_send_req(cmd, &mut conn);
                 }
 
-            conns.insert(&slave, conn);
+                conns.insert(&slave, conn);
                 all_lived.insert(slave.clone());
             }
         }
@@ -703,7 +703,7 @@ impl ConnBuilder {
         let cluster = self.cluster.expect("cluster name must be checked first");
         let rt = self.rt.unwrap_or(1000);
         let _wt = self.wt;
-        let moved = self.moved.expect("must be checked first");
+        let moved = self.moved.expect("moved must be checked first");
         let fetch = self.fetch.clone();
 
         let (mut tx, rx) = channel(MAX_NODE_PIPELINE_SIZE);
@@ -717,7 +717,7 @@ impl ConnBuilder {
                     .timeout(Duration::from_millis(1000))
                     .map_err(move |terr| {
                         error!(
-                            "fail to connect ot backend due to {} err {}",
+                            "fail to connect to backend {} due to err {}",
                             report_addr, terr
                         );
                         AsError::SystemError

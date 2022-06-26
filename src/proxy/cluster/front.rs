@@ -58,7 +58,7 @@ where
                 break;
             }
 
-            let cmd = self.waitq.pop_front().expect("command never be error");
+            let mut cmd = self.waitq.pop_front().expect("command never be error");
 
             if !cmd.borrow().is_done() {
                 self.waitq.push_front(cmd);
@@ -68,6 +68,8 @@ where
             if cmd.borrow().is_error() {
                 self.cluster.trigger_fetch(TriggerBy::Error);
             }
+
+            cmd.change_info_resp();
 
             match self.output.start_send(cmd) {
                 Ok(AsyncSink::Ready) => {

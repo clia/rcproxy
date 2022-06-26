@@ -4,3 +4,4 @@ Cargo.lock
 **/*.rs.bk
 **/settings.json
 /logs
+.vscode

@@ -105,6 +105,8 @@ where
 
         for _ in 0..MAX_PIPELINE {
             if let Some(cmd) = self.store.take() {
+                log::trace!("node({}) cmd: {:?}", self.addr, cmd);
+
                 let rcmd = cmd.clone();
                 match self.output.start_send(cmd) {
                     Ok(AsyncSink::NotReady(cmd)) => {
@@ -190,6 +192,8 @@ where
 
             let msg = match self.recv.poll() {
                 Ok(Async::Ready(Some(msg))) => {
+                    log::trace!("node({}) msg: {:?}", self.addr, msg);
+
                     count += 1;
                     msg
                 }

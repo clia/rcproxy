@@ -44,4 +44,5 @@ pub enum CmdType {
     Eval,   // Write
     Del,    // Write
     Auth,   // Auth
+    Info,   // Info
 }

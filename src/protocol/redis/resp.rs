@@ -516,6 +516,28 @@ impl Message {
         }
         None
     }
+
+    pub fn replace_info_resp(&mut self) {
+        if let RespType::Bulk(_, _) = self.rtype {
+            if self.data.len() > 7 {
+                let mut text = match std::str::from_utf8(self.data.as_ref()) {
+                    Ok(s) => s.to_owned(),
+                    Err(err) => {
+                        log::error!("replace_info_resp from_utf8 error: {}, data: {:?}", err, self.data);
+                        return;
+                    }
+                };
+                text = text.replace("redis_mode:cluster", "redis_mode:standalone");
+                // text = text.replace("cluster_enabled:1", "cluster_enabled:0");
+    
+                let len = text.len();
+                text = format!("${}\r\n{}", len - 9, &text[7..len]);
+                let data = Bytes::from(text);
+                self.rtype = RespType::Bulk(Range::new(0, 7), Range::new(7, len));
+                self.data = data;
+            }
+        }
+    }
 }
 
 const BYTE_SPACE: u8 = b' ';

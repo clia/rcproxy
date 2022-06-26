@@ -151,7 +151,7 @@ lazy_static! {
         hmap.insert(&b"AUTH"[..], CmdType::Auth);
         hmap.insert(&b"ECHO"[..], CmdType::Ctrl);
         hmap.insert(&b"PING"[..], CmdType::Ctrl);
-        hmap.insert(&b"INFO"[..], CmdType::Ctrl);
+        hmap.insert(&b"INFO"[..], CmdType::Info);
         hmap.insert(&b"PROXY"[..], CmdType::NotSupport);
         hmap.insert(&b"SLOWLOG"[..], CmdType::NotSupport);
         hmap.insert(&b"QUIT"[..], CmdType::Ctrl);
@@ -204,6 +204,10 @@ impl CmdType {
 
     pub fn is_auth(self) -> bool {
         CmdType::Auth == self
+    }
+
+    pub fn is_info(self) -> bool {
+        CmdType::Info == self
     }
 
     pub fn get_cmd_type(msg: &Message) -> CmdType {
