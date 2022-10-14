@@ -518,22 +518,26 @@ impl Message {
     }
 
     pub fn replace_info_resp(&mut self) {
-        if let RespType::Bulk(_, _) = self.rtype {
+        if let RespType::Bulk(_, body) = self.rtype {
             if self.data.len() > 7 {
-                let mut text = match std::str::from_utf8(self.data.as_ref()) {
+                let data = &self.data.as_ref()[body.begin()..body.end()];
+
+                let text = match std::str::from_utf8(data) {
                     Ok(s) => s.to_owned(),
                     Err(err) => {
                         log::error!("replace_info_resp from_utf8 error: {}, data: {:?}", err, self.data);
                         return;
                     }
                 };
-                text = text.replace("redis_mode:cluster", "redis_mode:standalone");
-                // text = text.replace("cluster_enabled:1", "cluster_enabled:0");
+                let text = text.replace("redis_mode:cluster", "redis_mode:standalone");
+                let text = text.replace("cluster_enabled:1", "cluster_enabled:0");
     
-                let len = text.len();
-                text = format!("${}\r\n{}", len - 9, &text[7..len]);
-                let data = Bytes::from(text);
-                self.rtype = RespType::Bulk(Range::new(0, 7), Range::new(7, len));
+                let body_len = text.len();
+                let head = format!("${}\r\n", body_len - 2);
+                let head_len = head.len();
+                let data = format!("${}\r\n{}", body_len - 2, text);
+                let data = Bytes::from(data);
+                self.rtype = RespType::Bulk(Range::new(0, head_len), Range::new(head_len, head_len + body_len));
                 self.data = data;
             }
         }
