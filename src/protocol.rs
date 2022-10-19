@@ -43,6 +43,17 @@ pub enum CmdType {
     Exists, // Read
     Eval,   // Write
     Del,    // Write
-    Auth,   // Auth
-    Info,   // Info
+
+    Auth,     // Auth
+    Info,     // Read
+    ReadAll,  // ReadAll
+    CountAll, // CountAll
+    Command,  // Command
+    Client,   // Client
+    Module,   // Module
+    Scan,     // Scan
+    Memory,   // Memory
+
+              // Keys,   // Read
+              // DbSize, // Read
 }

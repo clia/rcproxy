@@ -7,7 +7,7 @@ pub mod redirect;
 use crate::com::create_reuse_port_listener;
 use crate::com::{gethostbyname, AsError};
 use crate::com::{ClusterConfig, CODE_PORT_IN_USE};
-use crate::protocol::redis::{new_read_only_cmd, new_auth_cmd, RedisHandleCodec, RedisNodeCodec};
+use crate::protocol::redis::{new_auth_cmd, new_read_only_cmd, RedisHandleCodec, RedisNodeCodec};
 use crate::protocol::redis::{Cmd, ReplicaLayout, SLOTS_COUNT};
 use crate::proxy::cluster::fetcher::SingleFlightTrigger;
 use crate::utils::crc::crc16;
@@ -121,7 +121,7 @@ impl Cluster {
                 cmd.reregister(task::current());
                 Self::silence_send_req(cmd, &mut conn);
             }
-    
+
             conns.insert(&master, conn);
             all_lived.insert(master.clone());
         }
@@ -266,6 +266,21 @@ impl Cluster {
             .expect("master addr never be empty")
     }
 
+    fn get_all_addrs(&self, is_read: bool) -> Vec<String> {
+        // trace!("get slot={} and is_read={}", slot, is_read);
+        let mut addrs = vec![];
+        if self.read_from_slave && is_read {
+            for replica in self.slots.borrow().get_all_replicas() {
+                addrs.push(replica.to_string());
+            }
+        } else {
+            for master in self.slots.borrow().get_all_masters() {
+                addrs.push(master.to_string());
+            }
+        }
+        addrs
+    }
+
     pub fn trigger_fetch(&self, trigger_by: fetcher::TriggerBy) {
         if let Some(trigger) = self.fetch.borrow().clone() {
             let if_triggered = match trigger_by {
@@ -320,43 +335,90 @@ impl Cluster {
                 cmd.set_error(AsError::ProxyFail);
                 continue;
             }
-            let slot = {
-                let hash_tag = self.hash_tag.as_ref();
-                let signed = cmd.borrow().key_hash(hash_tag, crc16);
-                if signed == std::u64::MAX {
-                    cmd.set_error(AsError::BadRequest);
-                    continue;
+
+            if cmd.borrow().is_read_all() || cmd.borrow().is_count_all() || cmd.borrow().is_scan() {
+                // let addrs = self.get_all_addrs(true);
+                // cmd.set_expect(addrs.len() as u16);
+                // // let mut notify = Notify::empty();
+                // // notify.set_expect(addrs.len() as u16);
+                // // let cmd = cmd.into_cmd(notify);
+
+                // let mut subs = Vec::with_capacity(addrs.len());
+
+                // for addr in addrs {
+                // subs.push(cmd.clone());
+                // let cmd = cmd.clone();
+
+                let addr = cmd.get_addr().unwrap_or("".to_owned());
+                log::debug!("addr: {}", addr);
+                let mut conns = self.conns.borrow_mut();
+
+                if let Some(sender) = conns.get_mut(&addr).map(|x| x.sender()) {
+                    match sender.start_send(cmd) {
+                        Ok(AsyncSink::Ready) => {
+                            // trace!("success start command into backend");
+                            count += 1;
+                        }
+                        Ok(AsyncSink::NotReady(cmd)) => {
+                            cmd.borrow_mut().add_cycle();
+                            cmds.push_front(cmd);
+                            return Ok(count);
+                        }
+                        Err(se) => {
+                            let cmd = se.into_inner();
+                            cmd.borrow_mut().add_cycle();
+                            cmds.push_front(cmd);
+                            self.connect(&addr, &mut conns)?;
+                            return Ok(count);
+                        }
+                    }
+                } else {
+                    cmds.push_front(cmd);
+                    self.connect(&addr, &mut conns)?;
+                    return Ok(count);
                 }
+                // }
 
-                (signed as usize) % SLOTS_COUNT
-            };
-
-            let addr = self.get_addr(slot, cmd.borrow().is_read());
-            let mut conns = self.conns.borrow_mut();
-
-            if let Some(sender) = conns.get_mut(&addr).map(|x| x.sender()) {
-                match sender.start_send(cmd) {
-                    Ok(AsyncSink::Ready) => {
-                        // trace!("success start command into backend");
-                        count += 1;
-                    }
-                    Ok(AsyncSink::NotReady(cmd)) => {
-                        cmd.borrow_mut().add_cycle();
-                        cmds.push_front(cmd);
-                        return Ok(count);
-                    }
-                    Err(se) => {
-                        let cmd = se.into_inner();
-                        cmd.borrow_mut().add_cycle();
-                        cmds.push_front(cmd);
-                        self.connect(&addr, &mut conns)?;
-                        return Ok(count);
-                    }
-                }
+                // cmd.set_subs(Some(subs));
             } else {
-                cmds.push_front(cmd);
-                self.connect(&addr, &mut conns)?;
-                return Ok(count);
+                let slot = {
+                    let hash_tag = self.hash_tag.as_ref();
+                    let signed = cmd.borrow().key_hash(hash_tag, crc16);
+                    if signed == std::u64::MAX {
+                        cmd.set_error(AsError::BadRequest);
+                        continue;
+                    }
+
+                    (signed as usize) % SLOTS_COUNT
+                };
+
+                let addr = self.get_addr(slot, cmd.borrow().is_read());
+                let mut conns = self.conns.borrow_mut();
+
+                if let Some(sender) = conns.get_mut(&addr).map(|x| x.sender()) {
+                    match sender.start_send(cmd) {
+                        Ok(AsyncSink::Ready) => {
+                            // trace!("success start command into backend");
+                            count += 1;
+                        }
+                        Ok(AsyncSink::NotReady(cmd)) => {
+                            cmd.borrow_mut().add_cycle();
+                            cmds.push_front(cmd);
+                            return Ok(count);
+                        }
+                        Err(se) => {
+                            let cmd = se.into_inner();
+                            cmd.borrow_mut().add_cycle();
+                            cmds.push_front(cmd);
+                            self.connect(&addr, &mut conns)?;
+                            return Ok(count);
+                        }
+                    }
+                } else {
+                    cmds.push_front(cmd);
+                    self.connect(&addr, &mut conns)?;
+                    return Ok(count);
+                }
             }
         }
     }
@@ -412,7 +474,7 @@ impl Cluster {
             )
             .replica(is_replica)
             .connect()?;
-        
+
         let auth = self.cc.borrow().auth.clone();
         if auth != "" {
             let mut cmd = new_auth_cmd(&auth);

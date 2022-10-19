@@ -114,9 +114,18 @@ where
                 cmd.reregister(task::current());
                 cmd.cluster_mark_total(&self.cluster.cc.borrow().name);
 
+                // for done command, never send to backend
                 if cmd.check_valid() && !cmd.borrow().is_done() {
-                    // for done command, never send to backend
-                    if let Some(subs) = cmd.borrow().subs() {
+                    if cmd.borrow().is_read_all()
+                        || cmd.borrow().is_count_all()
+                        || cmd.borrow().is_scan()
+                    {
+                        cmd.mk_read_all_subs(self.cluster.get_all_addrs(true));
+
+                        if let Some(subs) = cmd.borrow().subs() {
+                            self.sendq.extend(subs.into_iter());
+                        }
+                    } else if let Some(subs) = cmd.borrow().subs() {
                         self.sendq.extend(subs.into_iter());
                     } else {
                         self.sendq.push_back(cmd.clone());

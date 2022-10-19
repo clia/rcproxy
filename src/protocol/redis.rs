@@ -36,12 +36,14 @@ const BYTES_NODES: &[u8] = b"NODES";
 pub struct Cmd {
     cmd: Rc<RefCell<Command>>,
     notify: Notify,
+    addr: Option<String>,
 }
 
 impl Drop for Cmd {
     fn drop(&mut self) {
         let expect = self.notify.expect();
         let origin = self.notify.fetch_sub(1);
+        // log::debug!("cmd drop: expect: {}, origin: {}", expect, origin);
         // TODO: sub command maybe notify multiple
         // trace!("cmd drop strong ref {} and expect {}", origin, expect);
         if origin - 1 == expect {
@@ -196,6 +198,14 @@ impl Cmd {
         self.notify.set_task(task);
     }
 
+    pub fn set_expect(&mut self, expect: u16) {
+        self.notify.set_expect(expect);
+    }
+
+    pub fn set_subs(&mut self, subs: Option<Vec<Cmd>>) {
+        self.borrow_mut().set_subs(subs);
+    }
+
     pub fn check_valid(&self) -> bool {
         if self.borrow().ctype.is_not_support() {
             self.borrow_mut().set_reply(AsError::RequestNotSupport);
@@ -259,11 +269,81 @@ impl Cmd {
 
     pub fn change_info_resp(&mut self) {
         let mut cmd = self.borrow_mut();
+
+        // Only for simple INFO command
         if cmd.ctype.is_info() {
-            if let Some(msg) = &mut cmd.reply {
-                msg.replace_info_resp();
+            if let RespType::Array(_, items) = &cmd.req.rtype {
+                if items.len() == 1 {
+                    if let Some(msg) = &mut cmd.reply {
+                        msg.replace_info_resp();
+                    }
+                }
             }
         }
+    }
+
+    pub fn mk_read_all_subs(&mut self, addrs: Vec<String>) {
+        self.notify.set_expect((addrs.len() + 1) as u16);
+        // log::debug!("mk_read_all_subs, notify: {:?}", self.notify);
+
+        let mut subs = Vec::with_capacity(addrs.len());
+
+        for addr in addrs {
+            let sub = Command {
+                flags: self.borrow().flags(),
+                ctype: self.borrow().ctype(),
+                cycle: DEFAULT_CYCLE,
+                req: self.borrow().req().clone(),
+                reply: None,
+                subs: None,
+
+                total_tracker: None,
+
+                remote_tracker: None,
+            };
+
+            let mut subcmd = sub.into_cmd(self.notify.clone());
+
+            subcmd.addr = Some(addr.clone());
+
+            subs.push(subcmd);
+
+            // let subcmd = Command {
+            //     flags,
+            //     ctype,
+            //     cycle: DEFAULT_CYCLE,
+            //     req: sub,
+            //     reply: None,
+            //     subs: None,
+
+            //     total_tracker: None,
+
+            //     remote_tracker: None,
+            // };
+
+            // subs.push(subcmd.with_addr(notify.clone(), addr.clone()));
+        }
+        log::debug!("mk_read_all_subs, notify: {:?}", self.notify);
+
+        self.borrow_mut().set_subs(Some(subs));
+
+        // let cmd = Command {
+        //     flags,
+        //     cycle: DEFAULT_CYCLE,
+        //     ctype,
+        //     req: msg,
+        //     reply: None,
+        //     subs: Some(subs),
+
+        //     total_tracker: None,
+
+        //     remote_tracker: None,
+        // };
+        // cmd.into_cmd(notify)
+    }
+
+    pub fn get_addr(&self) -> Option<String> {
+        self.addr.clone()
     }
 }
 
@@ -289,13 +369,14 @@ const BYTES_NULL_ARRAY: &[u8] = b"*-1\r\n";
 const BYTES_ZERO_INT: &[u8] = b":0\r\n";
 const BYTES_CMD_PING: &[u8] = b"PING";
 const BYTES_CMD_COMMAND: &[u8] = b"COMMAND";
-const BYTES_REPLY_NULL_ARRAY: &[u8] = b"*-1\n";
+const BYTES_REPLY_NULL_ARRAY: &[u8] = b"*-1\r\n";
 const STR_REPLY_PONG: &str = "PONG";
 
 const BYTES_CRLF: &[u8] = b"\r\n";
 
 const BYTES_ARRAY: &[u8] = b"*";
 const BYTES_INTEGER: &[u8] = b":";
+const BYTES_BULK_STRING: &[u8] = b"$";
 
 const DEFAULT_CYCLE: u8 = 0;
 const MAX_CYCLE: u8 = 1;
@@ -306,6 +387,15 @@ impl Command {
         Cmd {
             cmd: Rc::new(RefCell::new(self)),
             notify,
+            addr: None,
+        }
+    }
+
+    pub fn with_addr(self, notify: Notify, addr: String) -> Cmd {
+        Cmd {
+            cmd: Rc::new(RefCell::new(self)),
+            notify,
+            addr: Some(addr),
         }
     }
 
@@ -317,6 +407,9 @@ impl Command {
 
     pub fn reply_cmd(&self, buf: &mut BytesMut) -> Result<usize, AsError> {
         if self.ctype.is_mset() {
+            buf.extend_from_slice(BYTES_JUSTOK);
+            Ok(BYTES_JUSTOK.len())
+        } else if self.ctype.is_client() {
             buf.extend_from_slice(BYTES_JUSTOK);
             Ok(BYTES_JUSTOK.len())
         } else if self.ctype.is_mget() {
@@ -337,7 +430,78 @@ impl Command {
                 buf.extend_from_slice(BYTES_NULL_ARRAY);
                 Ok(BYTES_NULL_ARRAY.len())
             }
-        } else if self.ctype.is_del() || self.ctype.is_exists() {
+        } else if self.ctype.is_read_all() {
+            if let Some(subs) = self.subs.as_ref() {
+                buf.extend_from_slice(BYTES_ARRAY);
+
+                let begin = buf.len();
+                // let len = subs.len();
+                let mut len = 0;
+
+                for sub in subs {
+                    if let Some(reply) = &sub.borrow().reply {
+                        if let RespType::Array(_, array) = &reply.rtype {
+                            len += array.len();
+                        }
+                    }
+                }
+
+                myitoa(len, buf);
+                buf.extend_from_slice(BYTES_CRLF);
+
+                for sub in subs {
+                    sub.borrow().reply_inner_array(buf)?;
+                }
+                Ok(buf.len() - begin)
+            } else {
+                // debug!("subs is empty");
+                buf.extend_from_slice(BYTES_NULL_ARRAY);
+                Ok(BYTES_NULL_ARRAY.len())
+            }
+        } else if self.ctype.is_scan() {
+            if let Some(subs) = self.subs.as_ref() {
+                buf.extend_from_slice(BYTES_ARRAY);
+                myitoa(2, buf);
+                buf.extend_from_slice(BYTES_CRLF);
+
+                let begin = buf.len();
+                // let len = subs.len();
+                let next_idx = 0;
+                let mut len = 0;
+
+                for sub in subs {
+                    if let Some(reply) = &sub.borrow().reply {
+                        if let RespType::Array(_, array) = &reply.rtype {
+                            if array.len() == 2 {
+                                let inner_arr = &array[1];
+                                if let RespType::Array(_, array) = inner_arr {
+                                    len += array.len();
+                                }
+                            }
+                        }
+                    }
+                }
+
+                buf.extend_from_slice(BYTES_BULK_STRING);
+                myitoa(next_idx.to_string().len(), buf);
+                buf.extend_from_slice(BYTES_CRLF);
+                myitoa(next_idx, buf);
+                buf.extend_from_slice(BYTES_CRLF);
+
+                buf.extend_from_slice(BYTES_ARRAY);
+                myitoa(len, buf);
+                buf.extend_from_slice(BYTES_CRLF);
+
+                for sub in subs {
+                    sub.borrow().reply_inner_inner_array(buf)?;
+                }
+                Ok(buf.len() - begin)
+            } else {
+                // debug!("subs is empty");
+                buf.extend_from_slice(BYTES_NULL_ARRAY);
+                Ok(BYTES_NULL_ARRAY.len())
+            }
+        } else if self.ctype.is_del() || self.ctype.is_exists() || self.ctype.is_count_all() {
             if let Some(subs) = self.subs.as_ref() {
                 let begin = buf.len();
                 buf.extend_from_slice(BYTES_INTEGER);
@@ -361,11 +525,42 @@ impl Command {
     }
 
     fn reply_raw(&self, buf: &mut BytesMut) -> Result<usize, AsError> {
-        log::trace!("buf: {:?}", buf);
+        // log::trace!("buf: {:?}", buf);
         self.reply
             .as_ref()
             .map(|x| x.save(buf))
             .ok_or_else(|| AsError::BadReply)
+    }
+
+    fn reply_inner_array(&self, buf: &mut BytesMut) -> Result<usize, AsError> {
+        // log::trace!("buf: {:?}", buf);
+        let mut size = 0usize;
+        if let Some(reply) = &self.reply {
+            if let RespType::Array(_, subs) = &reply.rtype {
+                for sub in subs {
+                    size += reply.save_by_rtype(sub, buf);
+                }
+            }
+        }
+        Ok(size)
+    }
+
+    fn reply_inner_inner_array(&self, buf: &mut BytesMut) -> Result<usize, AsError> {
+        // log::trace!("buf: {:?}", buf);
+        let mut size = 0usize;
+        if let Some(reply) = &self.reply {
+            if let RespType::Array(_, subs) = &reply.rtype {
+                if subs.len() == 2 {
+                    let inner_arr = &subs[1];
+                    if let RespType::Array(_, subs) = inner_arr {
+                        for sub in subs {
+                            size += reply.save_by_rtype(sub, buf);
+                        }
+                    }
+                }
+            }
+        }
+        Ok(size)
     }
 }
 
@@ -433,14 +628,20 @@ impl Command {
     fn key_pos(&self) -> usize {
         if self.ctype.is_eval() {
             return KEY_EVAL_POS;
-        } else if self.ctype.is_info() {
+        } else if self.ctype.is_info() || self.ctype.is_command() {
             return COMMAND_POS;
+        } else if self.ctype.is_memory() {
+            return KEY_MEMORY_POS;
         }
         KEY_RAW_POS
     }
 
     pub fn subs(&self) -> Option<Vec<Cmd>> {
         self.subs.as_ref().cloned()
+    }
+
+    pub fn set_subs(&mut self, subs: Option<Vec<Cmd>>) {
+        self.subs = subs;
     }
 
     pub fn is_done(&self) -> bool {
@@ -526,6 +727,30 @@ impl Command {
 
     pub fn is_read(&self) -> bool {
         self.ctype.is_read()
+    }
+
+    pub fn is_read_all(&self) -> bool {
+        self.ctype.is_read_all()
+    }
+
+    pub fn is_count_all(&self) -> bool {
+        self.ctype.is_count_all()
+    }
+
+    pub fn is_scan(&self) -> bool {
+        self.ctype.is_scan()
+    }
+
+    pub fn flags(&self) -> CmdFlags {
+        self.flags
+    }
+
+    pub fn ctype(&self) -> CmdType {
+        self.ctype
+    }
+
+    pub fn req(&self) -> &Message {
+        &self.req
     }
 }
 
@@ -668,6 +893,7 @@ impl Command {
 const COMMAND_POS: usize = 0;
 const KEY_EVAL_POS: usize = 3;
 const KEY_RAW_POS: usize = 1;
+const KEY_MEMORY_POS: usize = 2;
 
 const MAX_KEY_COUNT: usize = 10000;
 
@@ -735,7 +961,6 @@ impl From<MessageMut> for Cmd {
                 }
             }
         }
-        trace!("cmd: {:?}", cmd);
         cmd.into_cmd(notify)
     }
 }

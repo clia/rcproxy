@@ -1,6 +1,6 @@
 [package]
 name = "clia-rcproxy"
-version = "2.1.0"
+version = "2.2.0"
 authors = ["clia <clia@163.com>", "wayslog <zxs867179@gmail.com>"]
 description = "A lightweight, fast and powerful Redis Cluster Proxy written in Rust."
 homepage = "https://github.com/clia/rcproxy"
@@ -60,6 +60,7 @@ sysinfo =  "0.9.5"
 rayon = "1.2.0"
 hotwatch = "0.4.3"
 chrono = "0.4.15"
+# clia-tracing-config = "0.2.1"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.9", features = ["std", "fmt", "env-filter", "tracing-log", "time", "local-time"] }
 tracing-appender = { package = "clia-tracing-appender", version = "0.2.3" }

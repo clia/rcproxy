@@ -88,6 +88,14 @@ pub fn run() -> Result<(), Error> {
     );
     crate::proxy::standalone::reload::init(&watch_file, cfg.clone(), enable_reload)?;
 
+    // let _guard = clia_tracing_config::build()
+    //     .filter_level(&cfg.log.level)
+    //     .with_ansi(cfg.log.ansi)
+    //     .to_stdout(cfg.log.stdout)
+    //     .directory(&cfg.log.directory)
+    //     .file_name(&cfg.log.file_name)
+    //     .rolling("daily")
+    //     .init();
     let _guard = init_tracing(
         &cfg.log.level,
         cfg.log.ansi,
@@ -157,7 +165,7 @@ fn init_tracing(
     let offset_sec = CliaUtcOffset::current_local_offset().expect("Can not get local offset!").whole_seconds();
     let offset = UtcOffset::from_whole_seconds(offset_sec).expect("Can not from whole seconds!");
     let timer = OffsetTime::new(
-        offset, 
+        offset,
         format_description!("[year]-[month]-[day] [hour]:[minute]:[second].[subsecond digits:3]"),
     );
 

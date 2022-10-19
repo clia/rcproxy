@@ -15,7 +15,8 @@ lazy_static! {
         hmap.insert(&b"EXISTS"[..], CmdType::Exists);
         hmap.insert(&b"EXPIRE"[..], CmdType::Write);
         hmap.insert(&b"EXPIREAT"[..], CmdType::Write);
-        hmap.insert(&b"KEYS"[..], CmdType::NotSupport);
+        hmap.insert(&b"KEYS"[..], CmdType::ReadAll);
+        hmap.insert(&b"DBSIZE"[..], CmdType::CountAll);
         hmap.insert(&b"MIGRATE"[..], CmdType::NotSupport);
         hmap.insert(&b"MOVE"[..], CmdType::NotSupport);
         hmap.insert(&b"OBJECT"[..], CmdType::NotSupport);
@@ -27,11 +28,15 @@ lazy_static! {
         hmap.insert(&b"RENAME"[..], CmdType::NotSupport);
         hmap.insert(&b"RENAMENX"[..], CmdType::NotSupport);
         hmap.insert(&b"RESTORE"[..], CmdType::Write);
-        hmap.insert(&b"SCAN"[..], CmdType::NotSupport);
+        hmap.insert(&b"SCAN"[..], CmdType::Scan);
         hmap.insert(&b"SORT"[..], CmdType::Write);
         hmap.insert(&b"TTL"[..], CmdType::Read);
         hmap.insert(&b"TYPE"[..], CmdType::Read);
         hmap.insert(&b"WAIT"[..], CmdType::NotSupport);
+        hmap.insert(&b"COMMAND"[..], CmdType::Command);
+        hmap.insert(&b"CLIENT"[..], CmdType::Client);
+        hmap.insert(&b"MODULE"[..], CmdType::Module);
+        hmap.insert(&b"MEMORY"[..], CmdType::Memory);
 
         // string key
         hmap.insert(&b"APPEND"[..], CmdType::Write);
@@ -167,7 +172,7 @@ lazy_static! {
 
 impl CmdType {
     pub fn is_read(self) -> bool {
-        CmdType::Read == self || self.is_mget() || self.is_exists()
+        CmdType::Read == self || self.is_mget() || self.is_exists() // || self.is_keys() || self.is_dbsize()
     }
 
     pub fn is_write(self) -> bool {
@@ -208,6 +213,42 @@ impl CmdType {
 
     pub fn is_info(self) -> bool {
         CmdType::Info == self
+    }
+
+    // pub fn is_keys(self) -> bool {
+    //     CmdType::Keys == self
+    // }
+
+    // pub fn is_dbsize(self) -> bool {
+    //     CmdType::DbSize == self
+    // }
+
+    pub fn is_read_all(self) -> bool {
+        CmdType::ReadAll == self
+    }
+
+    pub fn is_count_all(self) -> bool {
+        CmdType::CountAll == self
+    }
+
+    pub fn is_command(self) -> bool {
+        CmdType::Command == self
+    }
+
+    pub fn is_client(self) -> bool {
+        CmdType::Client == self
+    }
+
+    pub fn is_module(self) -> bool {
+        CmdType::Module == self
+    }
+
+    pub fn is_scan(self) -> bool {
+        CmdType::Scan == self
+    }
+
+    pub fn is_memory(self) -> bool {
+        CmdType::Memory == self
     }
 
     pub fn get_cmd_type(msg: &Message) -> CmdType {

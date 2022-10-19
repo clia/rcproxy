@@ -47,7 +47,7 @@ impl Notify {
 
     pub fn fetch_add(&self, val: u16) -> u16 {
         let origin_val = self.shared.count.get();
-        self.shared.count.set(origin_val - val);
+        self.shared.count.set(origin_val + val);
         origin_val
     }
 }
