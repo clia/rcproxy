@@ -336,7 +336,11 @@ impl Cluster {
                 continue;
             }
 
-            if cmd.borrow().is_read_all() || cmd.borrow().is_count_all() || cmd.borrow().is_scan() {
+            if cmd.borrow().is_read_all()
+                || cmd.borrow().is_count_all()
+                || cmd.borrow().is_scan()
+                || cmd.borrow().is_info_keyspace()
+            {
                 // let addrs = self.get_all_addrs(true);
                 // cmd.set_expect(addrs.len() as u16);
                 // // let mut notify = Notify::empty();

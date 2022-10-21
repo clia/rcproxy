@@ -119,6 +119,7 @@ where
                     if cmd.borrow().is_read_all()
                         || cmd.borrow().is_count_all()
                         || cmd.borrow().is_scan()
+                        || cmd.borrow().is_info_keyspace()
                     {
                         cmd.mk_read_all_subs(self.cluster.get_all_addrs(true));
 

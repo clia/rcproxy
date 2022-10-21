@@ -371,6 +371,7 @@ const BYTES_CMD_PING: &[u8] = b"PING";
 const BYTES_CMD_COMMAND: &[u8] = b"COMMAND";
 const BYTES_REPLY_NULL_ARRAY: &[u8] = b"*-1\r\n";
 const STR_REPLY_PONG: &str = "PONG";
+const BYTES_CMD_INFO_KEYSPACE: &[u8] = b"*2\r\n$4\r\nINFO\r\n$8\r\nkeyspace\r\n";
 
 const BYTES_CRLF: &[u8] = b"\r\n";
 
@@ -452,6 +453,64 @@ impl Command {
                 for sub in subs {
                     sub.borrow().reply_inner_array(buf)?;
                 }
+                Ok(buf.len() - begin)
+            } else {
+                // debug!("subs is empty");
+                buf.extend_from_slice(BYTES_NULL_ARRAY);
+                Ok(BYTES_NULL_ARRAY.len())
+            }
+        } else if self.is_info_keyspace() {
+            if let Some(subs) = self.subs.as_ref() {
+                buf.extend_from_slice(BYTES_BULK_STRING);
+
+                let begin = buf.len();
+
+                let mut keys_sum = 0;
+                let mut expires_sum = 0;
+                let mut avg_ttl_sum = 0;
+
+                for sub in subs {
+                    if let Some(reply) = &sub.borrow().reply {
+                        // b"$44\r\n# Keyspace\r\ndb0:keys=3,expires=0,avg_ttl=0\r\n\r\n"
+                        let data = String::from_utf8_lossy(reply.data.as_ref());
+                        if data.contains("# Keyspace") {
+                            let idx1 = data.find("keys=").unwrap();
+                            let str1 = &data[idx1 + "keys=".len()..];
+                            let idx2 = str1.find(",").unwrap();
+                            let keys: i32 = str1[..idx2].parse().unwrap();
+
+                            let idx3 = str1.find("expires=").unwrap();
+                            let str2 = &str1[idx3 + "expires=".len()..];
+                            let idx4 = str2.find(",").unwrap();
+                            let expires: i32 = str2[..idx4].parse().unwrap();
+
+                            let idx5 = str2.find("avg_ttl=").unwrap();
+                            let str3 = &str2[idx5 + "avg_ttl=".len()..];
+                            let idx6 = str3.find("\r").unwrap();
+                            let avg_ttl: i32 = str3[..idx6].parse().unwrap();
+
+                            keys_sum += keys;
+                            expires_sum += expires * keys;
+                            avg_ttl_sum += avg_ttl * keys;
+                        }
+                    }
+                }
+                let keys = keys_sum;
+                let expires = if keys == 0 { 0 } else { expires_sum / keys };
+                let avg_ttl = if keys == 0 { 0 } else { avg_ttl_sum / keys };
+
+                let data = format!(
+                    "# Keyspace\r\ndb0:keys={},expires={},avg_ttl={}\r\n",
+                    keys, expires, avg_ttl
+                );
+
+                myitoa(data.len(), buf);
+                buf.extend_from_slice(BYTES_CRLF);
+
+                buf.extend_from_slice(data.as_bytes());
+                buf.extend_from_slice(BYTES_CRLF);
+                log::debug!("buf: {:?}", buf);
+
                 Ok(buf.len() - begin)
             } else {
                 // debug!("subs is empty");
@@ -739,6 +798,10 @@ impl Command {
 
     pub fn is_scan(&self) -> bool {
         self.ctype.is_scan()
+    }
+
+    pub fn is_info_keyspace(&self) -> bool {
+        self.ctype.is_info() && self.req.data == BYTES_CMD_INFO_KEYSPACE
     }
 
     pub fn flags(&self) -> CmdFlags {
