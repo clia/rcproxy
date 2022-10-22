@@ -474,20 +474,74 @@ impl Command {
                         // b"$44\r\n# Keyspace\r\ndb0:keys=3,expires=0,avg_ttl=0\r\n\r\n"
                         let data = String::from_utf8_lossy(reply.data.as_ref());
                         if data.contains("# Keyspace") {
-                            let idx1 = data.find("keys=").unwrap();
+                            let idx1 = match data.find("keys=") {
+                                Some(idx) => idx,
+                                None => {
+                                    log::error!("keyspace format error: {}", data);
+                                    break;
+                                }
+                            };
                             let str1 = &data[idx1 + "keys=".len()..];
-                            let idx2 = str1.find(",").unwrap();
-                            let keys: i32 = str1[..idx2].parse().unwrap();
+                            let idx2 = match str1.find(",") {
+                                Some(idx) => idx,
+                                None => {
+                                    log::error!("keyspace format error: {}", data);
+                                    break;
+                                }
+                            };
+                            let keys: i32 = match str1[..idx2].parse() {
+                                Ok(val) => val,
+                                Err(_) => {
+                                    log::error!("keyspace format error: {}", data);
+                                    break;
+                                }
+                            };
 
-                            let idx3 = str1.find("expires=").unwrap();
+                            let idx3 = match str1.find("expires=") {
+                                Some(idx) => idx,
+                                None => {
+                                    log::error!("keyspace format error: {}", data);
+                                    break;
+                                }
+                            };
                             let str2 = &str1[idx3 + "expires=".len()..];
-                            let idx4 = str2.find(",").unwrap();
-                            let expires: i32 = str2[..idx4].parse().unwrap();
+                            let idx4 = match str2.find(",") {
+                                Some(idx) => idx,
+                                None => {
+                                    log::error!("keyspace format error: {}", data);
+                                    break;
+                                }
+                            };
+                            let expires: i32 = match str2[..idx4].parse() {
+                                Ok(val) => val,
+                                Err(_) => {
+                                    log::error!("keyspace format error: {}", data);
+                                    break;
+                                }
+                            };
 
-                            let idx5 = str2.find("avg_ttl=").unwrap();
+                            let idx5 = match str2.find("avg_ttl=") {
+                                Some(idx) => idx,
+                                None => {
+                                    log::error!("keyspace format error: {}", data);
+                                    break;
+                                }
+                            };
                             let str3 = &str2[idx5 + "avg_ttl=".len()..];
-                            let idx6 = str3.find("\r").unwrap();
-                            let avg_ttl: i32 = str3[..idx6].parse().unwrap();
+                            let idx6 = match str3.find("\r") {
+                                Some(idx) => idx,
+                                None => {
+                                    log::error!("keyspace format error: {}", data);
+                                    break;
+                                }
+                            };
+                            let avg_ttl: i32 = match str3[..idx6].parse() {
+                                Ok(val) => val,
+                                Err(_) => {
+                                    log::error!("keyspace format error: {}", data);
+                                    break;
+                                }
+                            };
 
                             keys_sum += keys;
                             expires_sum += expires * keys;
