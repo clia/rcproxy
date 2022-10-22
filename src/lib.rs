@@ -26,20 +26,13 @@ pub(crate) mod utils;
 
 use std::thread::{self, Builder, JoinHandle};
 use std::time::Duration;
-// use std::io::Write;
 use std::env;
 
 use failure::Error;
-// use chrono::Local;
 
 use com::meta::{load_meta, meta_init};
 use com::ClusterConfig;
 use metrics::thread_incr;
-use tracing_appender::non_blocking::WorkerGuard;
-use tracing_subscriber::fmt::time::OffsetTime;
-use time::macros::format_description;
-use time::UtcOffset;
-use clia_time::UtcOffset as CliaUtcOffset;
 
 pub fn run() -> Result<(), Error> {
     // env_logger::Env::default().filter_or(env_logger::DEFAULT_FILTER_ENV, "info");
@@ -88,21 +81,14 @@ pub fn run() -> Result<(), Error> {
     );
     crate::proxy::standalone::reload::init(&watch_file, cfg.clone(), enable_reload)?;
 
-    // let _guard = clia_tracing_config::build()
-    //     .filter_level(&cfg.log.level)
-    //     .with_ansi(cfg.log.ansi)
-    //     .to_stdout(cfg.log.stdout)
-    //     .directory(&cfg.log.directory)
-    //     .file_name(&cfg.log.file_name)
-    //     .rolling("daily")
-    //     .init();
-    let _guard = init_tracing(
-        &cfg.log.level,
-        cfg.log.ansi,
-        cfg.log.stdout,
-        &cfg.log.directory,
-        &cfg.log.file_name,
-    );
+    let _guard = clia_tracing_config::build()
+        .filter_level(&cfg.log.level)
+        .with_ansi(cfg.log.ansi)
+        .to_stdout(cfg.log.stdout)
+        .directory(&cfg.log.directory)
+        .file_name(&cfg.log.file_name)
+        .rolling("daily")
+        .init();
 
     let mut ths = Vec::new();
     for cluster in cfg.clusters.into_iter() {
@@ -152,58 +138,58 @@ pub fn run() -> Result<(), Error> {
     Ok(())
 }
 
-fn init_tracing(
-    level: &str,
-    ansi: bool,
-    stdout: bool,
-    directory: &str,
-    file_name: &str,
-) -> WorkerGuard {
-    let file_appender = tracing_appender::rolling::daily(directory, file_name);
-    let (file_writer, guard) = tracing_appender::non_blocking(file_appender);
+// fn init_tracing(
+//     level: &str,
+//     ansi: bool,
+//     stdout: bool,
+//     directory: &str,
+//     file_name: &str,
+// ) -> WorkerGuard {
+//     let file_appender = tracing_appender::rolling::daily(directory, file_name);
+//     let (file_writer, guard) = tracing_appender::non_blocking(file_appender);
 
-    let offset_sec = CliaUtcOffset::current_local_offset().expect("Can not get local offset!").whole_seconds();
-    let offset = UtcOffset::from_whole_seconds(offset_sec).expect("Can not from whole seconds!");
-    let timer = OffsetTime::new(
-        offset,
-        format_description!("[year]-[month]-[day] [hour]:[minute]:[second].[subsecond digits:3]"),
-    );
+//     let offset_sec = CliaUtcOffset::current_local_offset().expect("Can not get local offset!").whole_seconds();
+//     let offset = UtcOffset::from_whole_seconds(offset_sec).expect("Can not from whole seconds!");
+//     let timer = OffsetTime::new(
+//         offset,
+//         format_description!("[year]-[month]-[day] [hour]:[minute]:[second].[subsecond digits:3]"),
+//     );
 
-    // Configure a custom event formatter
-    let format = tracing_subscriber::fmt::format()
-        .pretty()
-        .with_level(true) // don't include levels in formatted output
-        .with_target(true) // don't include targets
-        .with_thread_ids(true) // include the thread ID of the current thread
-        .with_thread_names(true) // include the name of the current thread
-        .with_source_location(true);
+//     // Configure a custom event formatter
+//     let format = tracing_subscriber::fmt::format()
+//         .pretty()
+//         .with_level(true) // don't include levels in formatted output
+//         .with_target(true) // don't include targets
+//         .with_thread_ids(true) // include the thread ID of the current thread
+//         .with_thread_names(true) // include the name of the current thread
+//         .with_source_location(true);
 
-    if stdout {
-        tracing_subscriber::fmt()
-            .event_format(format)
-            .with_env_filter(
-                tracing_subscriber::EnvFilter::try_from_default_env()
-                    .unwrap_or(tracing_subscriber::EnvFilter::new(&format!("{}", level))),
-            )
-            .with_timer(timer)
-            .with_writer(std::io::stdout)
-            .with_ansi(ansi)
-            .init();
-    } else {
-        tracing_subscriber::fmt()
-            .event_format(format)
-            .with_env_filter(
-                tracing_subscriber::EnvFilter::try_from_default_env()
-                    .unwrap_or(tracing_subscriber::EnvFilter::new(&format!("{}", level))),
-            )
-            .with_timer(timer)
-            .with_writer(file_writer)
-            .with_ansi(ansi)
-            .init();
-    }
+//     if stdout {
+//         tracing_subscriber::fmt()
+//             .event_format(format)
+//             .with_env_filter(
+//                 tracing_subscriber::EnvFilter::try_from_default_env()
+//                     .unwrap_or(tracing_subscriber::EnvFilter::new(&format!("{}", level))),
+//             )
+//             .with_timer(timer)
+//             .with_writer(std::io::stdout)
+//             .with_ansi(ansi)
+//             .init();
+//     } else {
+//         tracing_subscriber::fmt()
+//             .event_format(format)
+//             .with_env_filter(
+//                 tracing_subscriber::EnvFilter::try_from_default_env()
+//                     .unwrap_or(tracing_subscriber::EnvFilter::new(&format!("{}", level))),
+//             )
+//             .with_timer(timer)
+//             .with_writer(file_writer)
+//             .with_ansi(ansi)
+//             .init();
+//     }
 
-    guard
-}
+//     guard
+// }
 
 fn spawn_worker<T>(cc: &ClusterConfig, ip: Option<String>, spawn_fn: T) -> Vec<JoinHandle<()>>
 where
