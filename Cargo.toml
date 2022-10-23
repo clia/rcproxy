@@ -1,6 +1,6 @@
 [package]
 name = "clia-rcproxy"
-version = "2.2.0"
+version = "2.2.1"
 authors = ["clia <clia@163.com>", "wayslog <zxs867179@gmail.com>"]
 description = "A lightweight, fast and powerful Redis Cluster Proxy written in Rust."
 homepage = "https://github.com/clia/rcproxy"
