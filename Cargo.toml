@@ -5,7 +5,6 @@ authors = ["clia <clia@163.com>", "wayslog <zxs867179@gmail.com>"]
 description = "A lightweight, fast and powerful Redis Cluster Proxy written in Rust."
 homepage = "https://github.com/clia/rcproxy"
 repository = "https://github.com/clia/rcproxy"
-documentation = "https://docs.rs/clia-rcproxy/2.1.0"
 license = "MIT"
 readme = "README.md"
 categories = ["asynchronous", "network-programming", "caching", "database"]
