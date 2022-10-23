@@ -1,6 +1,10 @@
 
 # change log
 
+# 2.2.0
+
+- fully support for RedisInsight client
+
 # 2.1.0
 
 - log use tracing

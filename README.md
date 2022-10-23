@@ -50,13 +50,14 @@ directory = "/var/log/rcproxy" # log file directory
 file_name = "rcproxy.log" # log file name
 
 [metrics]
+# change port config, to run multiple instance in one machine.
 port = 2110
 
 [[clusters]]
 # name of the cluster. Each cluster means one front-end port.
 name="test-redis-cluster"
 
-# listen_addr means the cluster font end serve address.
+# listen_addr means the cluster front end server address.
 listen_addr="0.0.0.0:9001"
 
 # cache_type only support memcache|redis|redis_cluster
@@ -108,6 +109,8 @@ ping_fail_limit=3
 # ping_interval means the interval of each ping was send into backend node in millisecond.
 ping_interval=10000
 
+# Configure password for backend server. It will send this password to backend server on connect.
+# Empty value will be ignored.
 auth = "" # mypassw
 
 ```
