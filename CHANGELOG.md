@@ -1,6 +1,10 @@
 
 # change log
 
+# 2.2.1
+
+- fix doc link
+
 # 2.2.0
 
 - fully support for RedisInsight client
