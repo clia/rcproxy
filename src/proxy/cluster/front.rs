@@ -9,6 +9,7 @@ use std::collections::VecDeque;
 use std::rc::Rc;
 
 const MAX_BATCH_SIZE: usize = 8 * 1024;
+const BYTES_JUSTOK: &[u8] = b"+OK\r\n";
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum State {
@@ -32,6 +33,7 @@ where
     waitq: VecDeque<Cmd>,
 
     state: State,
+    authed: bool,
 }
 
 impl<I, O> Front<I, O>
@@ -40,6 +42,12 @@ where
     O: Sink<SinkItem = Cmd, SinkError = AsError>,
 {
     pub fn new(client: String, cluster: Rc<Cluster>, input: I, output: O) -> Front<I, O> {
+        let authed = if cluster.cc.borrow().auth == "" {
+            true
+        } else {
+            false
+        };
+
         Front {
             cluster,
             client,
@@ -48,6 +56,7 @@ where
             sendq: VecDeque::with_capacity(MAX_BATCH_SIZE),
             waitq: VecDeque::with_capacity(MAX_BATCH_SIZE),
             state: State::Running,
+            authed,
         }
     }
 
@@ -114,8 +123,24 @@ where
                 cmd.reregister(task::current());
                 cmd.cluster_mark_total(&self.cluster.cc.borrow().name);
 
-                // for done command, never send to backend
-                if cmd.check_valid() && !cmd.borrow().is_done() {
+                if !self.authed && cmd.borrow().ctype().need_auth() {
+                    cmd.set_no_auth();
+                } else if cmd.borrow().ctype().is_auth() {
+                    if !self.authed {
+                        let cc_auth = self.cluster.cc.borrow().auth.clone();
+                        if cmd.borrow().req().data
+                            == format!("*2\r\n$4\r\nAUTH\r\n${}\r\n{}\r\n", cc_auth.len(), cc_auth)
+                        {
+                            self.authed = true;
+                            cmd.set_reply(BYTES_JUSTOK);
+                        } else {
+                            cmd.set_auth_wrong();
+                        }
+                    } else {
+                        cmd.set_reply(BYTES_JUSTOK);
+                    }
+                } else if cmd.check_valid() && !cmd.borrow().is_done() {
+                    // for done command, never send to backend
                     if cmd.borrow().is_read_all()
                         || cmd.borrow().is_count_all()
                         || cmd.borrow().is_scan()

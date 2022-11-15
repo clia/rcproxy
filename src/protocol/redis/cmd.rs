@@ -251,6 +251,20 @@ impl CmdType {
         CmdType::Memory == self
     }
 
+    pub fn need_auth(self) -> bool {
+        self.is_read()
+            || self.is_write()
+            || self.is_mget()
+            || self.is_mset()
+            || self.is_exists()
+            || self.is_eval()
+            || self.is_del()
+            || self.is_ctrl()
+            || self.is_read_all()
+            || self.is_count_all()
+            || self.is_scan()
+    }
+
     pub fn get_cmd_type(msg: &Message) -> CmdType {
         if let Some(data) = msg.nth(0) {
             if let Some(ctype) = CMD_TYPE.get(data) {

@@ -206,6 +206,14 @@ impl Cmd {
         self.borrow_mut().set_subs(subs);
     }
 
+    pub fn set_no_auth(&self) {
+        self.borrow_mut().set_reply(AsError::NoAuth);
+    }
+
+    pub fn set_auth_wrong(&self) {
+        self.borrow_mut().set_reply(AsError::AuthWrong);
+    }
+
     pub fn check_valid(&self) -> bool {
         if self.borrow().ctype.is_not_support() {
             self.borrow_mut().set_reply(AsError::RequestNotSupport);

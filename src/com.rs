@@ -35,6 +35,12 @@ pub enum AsError {
     #[fail(display = "request not supported")]
     RequestNotSupport,
 
+    #[fail(display = "NOAUTH Authentication required.")]
+    NoAuth,
+
+    #[fail(display = "WRONGPASS invalid username-password pair or user is disabled.")]
+    AuthWrong,
+
     #[fail(display = "inline request don't support multi keys")]
     RequestInlineWithMultiKeys,
 
@@ -94,6 +100,8 @@ impl PartialEq for AsError {
             (Self::BadMessage, Self::BadMessage) => true,
             (Self::BadRequest, Self::BadRequest) => true,
             (Self::RequestNotSupport, Self::RequestNotSupport) => true,
+            (Self::NoAuth, Self::NoAuth) => true,
+            (Self::AuthWrong, Self::AuthWrong) => true,
             (Self::RequestInlineWithMultiKeys, Self::RequestInlineWithMultiKeys) => true,
             (Self::BadReply, Self::BadReply) => true,
             (Self::ProxyFail, Self::ProxyFail) => true,
