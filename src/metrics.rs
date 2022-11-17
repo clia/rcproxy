@@ -127,7 +127,7 @@ pub fn measure_system() -> Result<(), AsError> {
         if !system.refresh_process(pid) {
             return Ok(());
         }
-        if let Some(process) = system.get_process(pid) {
+        if let Some(process) = system.process(pid) {
             let cpu_usage = process.cpu_usage() as f64;
             let memory_usage = process.memory() as f64;
             ASTER_MEMORY.set(memory_usage);
