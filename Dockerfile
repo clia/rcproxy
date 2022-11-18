@@ -1,15 +1,11 @@
-FROM rust:1.65-slim-buster as builder
+FROM ubuntu
 
-WORKDIR /usr/src/app
+COPY target/release/rcproxy /app/rcproxy
+COPY default.toml /configs/default.toml
 
-COPY ./Cargo.lock ./Cargo.lock
-COPY ./Cargo.toml ./Cargo.toml
-
-# Build only the dependencies to cache them
-RUN cargo build --release
-RUN rm src/*.rs
-
-# 4. Now that the dependency is built, copy your source code
-COPY . /usr/src/app/rcproxy
-RUN rm ./target/release/deps/holodeck*
-RUN cargo install --path .
+WORKDIR /app
+# CMD ls /app/rcproxy
+RUN chmod u+x /app/rcproxy
+RUN chmod u+x /configs/default.toml
+RUN cat /configs/default.toml
+CMD /app/rcproxy /configs/default.toml

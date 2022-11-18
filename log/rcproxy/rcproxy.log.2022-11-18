@@ -1,0 +1,408 @@
+  [2m2022-11-18 04:58:48.751[0m [32m INFO[0m [1;32mlibaster[0m[32m: [32mstarting aster cluster test-cluster in addr 0.0.0.0:7788[0m
+    [2;3mat[0m src/lib.rs:111 [2;3mon[0m main ThreadId(1)
+
+  [2m2022-11-18 04:58:48.751[0m [32m INFO[0m [1;32mlibaster[0m[32m: [32msetup meta info with Meta { cluster: "test-cluster", port: "7788", ip: "10.0.5.2" }[0m
+    [2;3mat[0m src/lib.rs:200 [2;3mon[0m main ThreadId(1)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7000 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7000[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7000[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7001 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7001[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7001[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7002 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7002[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7002[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7003 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7003[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7003[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7004 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7004[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7004[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7005 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7005[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7005[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:48.752[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to init cluster due to fail to init cluster test-cluster due to all seed nodes is die[0m
+    [2;3mat[0m src/proxy/cluster.rs:861 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:58:51.752[0m [32m INFO[0m [1;32mlibaster::metrics[0m[32m: [32mlisten http metrics port in addr 2110[0m
+    [2;3mat[0m src/metrics.rs:146 [2;3mon[0m aster-http-srv ThreadId(4)
+
+  [2m2022-11-18 04:59:04.742[0m [32m INFO[0m [1;32mlibaster[0m[32m: [32mstarting aster cluster test-cluster in addr 0.0.0.0:7788[0m
+    [2;3mat[0m src/lib.rs:111 [2;3mon[0m main ThreadId(1)
+
+  [2m2022-11-18 04:59:04.742[0m [32m INFO[0m [1;32mlibaster[0m[32m: [32msetup meta info with Meta { cluster: "test-cluster", port: "7788", ip: "10.0.5.2" }[0m
+    [2;3mat[0m src/lib.rs:200 [2;3mon[0m main ThreadId(1)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7000 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7000[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7000[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7001 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7001[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7001[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7002 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7002[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7002[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7003 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7003[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7003[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7004 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7004[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7004[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7005 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7005[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7005[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:04.743[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to init cluster due to fail to init cluster test-cluster due to all seed nodes is die[0m
+    [2;3mat[0m src/proxy/cluster.rs:861 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 04:59:07.743[0m [32m INFO[0m [1;32mlibaster::metrics[0m[32m: [32mlisten http metrics port in addr 2110[0m
+    [2;3mat[0m src/metrics.rs:146 [2;3mon[0m aster-http-srv ThreadId(4)
+
+  [2m2022-11-18 17:41:16.959[0m [32m INFO[0m [1;32mlibaster[0m[32m: [32mstarting aster cluster test-cluster in addr 0.0.0.0:7788[0m
+    [2;3mat[0m src/lib.rs:111 [2;3mon[0m main ThreadId(1)
+
+  [2m2022-11-18 17:41:16.960[0m [32m INFO[0m [1;32mlibaster[0m[32m: [32msetup meta info with Meta { cluster: "test-cluster", port: "7788", ip: "10.0.5.2" }[0m
+    [2;3mat[0m src/lib.rs:200 [2;3mon[0m main ThreadId(1)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7000 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7000[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7000[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7001 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7001[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7001[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7002 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7002[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7002[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7003 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7003[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7003[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7004 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7004[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7004[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7005 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.960[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7005[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.961[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7005[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.961[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:16.961[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to init cluster due to fail to init cluster test-cluster due to all seed nodes is die[0m
+    [2;3mat[0m src/proxy/cluster.rs:861 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:19.960[0m [32m INFO[0m [1;32mlibaster::metrics[0m[32m: [32mlisten http metrics port in addr 2110[0m
+    [2;3mat[0m src/metrics.rs:146 [2;3mon[0m aster-http-srv ThreadId(4)
+
+  [2m2022-11-18 17:41:32.142[0m [32m INFO[0m [1;32mlibaster[0m[32m: [32mstarting aster cluster test-cluster in addr 0.0.0.0:7788[0m
+    [2;3mat[0m src/lib.rs:111 [2;3mon[0m main ThreadId(1)
+
+  [2m2022-11-18 17:41:32.143[0m [32m INFO[0m [1;32mlibaster[0m[32m: [32msetup meta info with Meta { cluster: "test-cluster", port: "7788", ip: "10.0.5.2" }[0m
+    [2;3mat[0m src/lib.rs:200 [2;3mon[0m main ThreadId(1)
+
+  [2m2022-11-18 17:41:32.143[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7000 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7000[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7000[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7001 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7001[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7001[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7002 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7002[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7002[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7003 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7003[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7003[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7004 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7004[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7004[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.143[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.144[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to connect to backend 127.0.0.1:7005 due to err Connection refused (os error 111)[0m
+    [2;3mat[0m src/proxy/cluster.rs:785 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.144[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mconnect failed by error fail to load system info[0m
+    [2;3mat[0m src/proxy/cluster.rs:792 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.144[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to conenct to backend 127.0.0.1:7005[0m
+    [2;3mat[0m src/proxy/cluster.rs:805 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.144[0m [32m INFO[0m [1;32mlibaster::proxy::cluster::back[0m[32m: [32mbackend blackhole exists of 127.0.0.1:7005[0m
+    [2;3mat[0m src/proxy/cluster/back.rs:399 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.144[0m [33m WARN[0m [1;33mlibaster::proxy::cluster::init[0m[33m: [33mfail to parse cmd reply due CLUSTER SLOTS must be replied with array[0m
+    [2;3mat[0m src/proxy/cluster/init.rs:165 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:32.144[0m [31mERROR[0m [1;31mlibaster::proxy::cluster[0m[31m: [31mfail to init cluster due to fail to init cluster test-cluster due to all seed nodes is die[0m
+    [2;3mat[0m src/proxy/cluster.rs:861 [2;3mon[0m test-cluster ThreadId(3)
+
+  [2m2022-11-18 17:41:35.143[0m [32m INFO[0m [1;32mlibaster::metrics[0m[32m: [32mlisten http metrics port in addr 2110[0m
+    [2;3mat[0m src/metrics.rs:146 [2;3mon[0m aster-http-srv ThreadId(4)
+

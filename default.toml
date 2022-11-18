@@ -2,7 +2,7 @@
 level = "libaster=info" # "trace" "info" "debug" "warn" "error"
 ansi = true  # support ANSI colors
 stdout = false # print logs to stdout
-directory = "/var/log/rcproxy" # log file directory
+directory = "log/rcproxy" # log file directory
 file_name = "rcproxy.log" # log file name
 
 [metrics]
@@ -14,7 +14,14 @@ listen_addr = "0.0.0.0:7788"
 hash_tag = "{}"
 thread = 1
 cache_type = "redis_cluster"
-servers = ["127.0.0.1:7000", "127.0.0.1:7001", "127.0.0.1:7002", "127.0.0.1:7003", "127.0.0.1:7004", "127.0.0.1:7005"]
+servers = [
+    "127.0.0.1:7000", 
+    "127.0.0.1:7001", 
+    "127.0.0.1:7002", 
+    "127.0.0.1:7003", 
+    "127.0.0.1:7004", 
+    "127.0.0.1:7005"
+]
 
 fetch_interval = 1800000 # 1800s , 30 minutes
 fetch_since_latest_cmd = 1000 # 3600s , 1 hour
