@@ -6,3 +6,4 @@ Cargo.lock
 /logs
 .vscode
 .idea/
+log/
