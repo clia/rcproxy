@@ -12,6 +12,8 @@ COPY Cargo.toml Cargo.lock /usr/src/rcproxy/
 
 COPY benches /usr/src/rcproxy/benches
 
+COPY bin /usr/src/rcproxy/bin/
+
 COPY src /usr/src/rcproxy/src/
 
 # Set the working directory
