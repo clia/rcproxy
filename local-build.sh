@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE=ghcr.io/sterrenhemel/rcproxy
+IMAGE=glenaaa/rcproxy
 IMAGE_TAG=local
 
 CURDIR=$(pwd)
@@ -11,6 +11,7 @@ cargo build --all --release
 echo "build $IMAGE:$IMAGE_TAG"
 docker buildx build --platform linux/amd64 -f Dockerfile -t $IMAGE:$IMAGE_TAG .
 # push
-docker login ghcr.io -u big-thousand -p $1
+# docker login ghcr.io -u big-thousand -p $1
+docker login -u glenaaa -p $1
 #docker push
 docker push $IMAGE:$IMAGE_TAG
