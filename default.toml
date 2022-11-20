@@ -1,7 +1,7 @@
 [log]
 level = "libaster=info" # "trace" "info" "debug" "warn" "error"
 ansi = true  # support ANSI colors
-stdout = false # print logs to stdout
+stdout = true # print logs to stdout
 directory = "log/rcproxy" # log file directory
 file_name = "rcproxy.log" # log file name
 

@@ -5,6 +5,7 @@ IMAGE_TAG=local
 
 CURDIR=$(pwd)
 
+# sudo apt update && sudo apt install -y musl-tools
 rustup target add x86_64-unknown-linux-musl
 # local build main
 cargo build --target x86_64-unknown-linux-musl --release
