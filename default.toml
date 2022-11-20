@@ -10,18 +10,11 @@ port = 2110
 
 [[clusters]]
 name = "test-cluster"
-listen_addr = "0.0.0.0:7788"
+listen_addr = "0.0.0.0:6379"
 hash_tag = "{}"
 thread = 1
 cache_type = "redis_cluster"
-servers = [
-    "127.0.0.1:7000", 
-    "127.0.0.1:7001", 
-    "127.0.0.1:7002", 
-    "127.0.0.1:7003", 
-    "127.0.0.1:7004", 
-    "127.0.0.1:7005"
-]
+servers = ["redis-cluster-leader-headless.redis-cluster-default.svc.cluster.local:6379"]
 
 fetch_interval = 1800000 # 1800s , 30 minutes
 fetch_since_latest_cmd = 1000 # 3600s , 1 hour
