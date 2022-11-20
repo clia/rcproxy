@@ -12,6 +12,8 @@ COPY Cargo.toml Cargo.lock /usr/src/rcproxy/
 
 COPY benches /usr/src/rcproxy/benches
 
+COPY src /usr/src/rcproxy/src/
+
 # Set the working directory
 WORKDIR /usr/src/rcproxy
 
@@ -22,7 +24,6 @@ RUN rustup target add x86_64-unknown-linux-musl
 RUN cargo build --target x86_64-unknown-linux-musl --release
 
 # Now copy in the rest of the sources
-COPY src /usr/src/rcproxy/src/
 
 # This is the actual application build.
 RUN cargo build --target x86_64-unknown-linux-musl --release
