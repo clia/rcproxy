@@ -8,4 +8,4 @@ COPY default.toml /configs/default/default.toml
 COPY cli.yml /app/cli.yml
 WORKDIR /app
 RUN chmod u+x /app/rcproxy
-CMD ["/app/rcproxy" "/configs/default/default.toml"]
+CMD /app/rcproxy /configs/default/default.toml
