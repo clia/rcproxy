@@ -165,6 +165,30 @@ lazy_static! {
         hmap.insert(&b"CONFIG"[..], CmdType::NotSupport);
         hmap.insert(&b"CLUSTER"[..], CmdType::Ctrl);
         hmap.insert(&b"READONLY"[..], CmdType::Ctrl);
+        // bloom filter type
+        hmap.insert(&b"BF.ADD"[..], CmdType::Write);
+        hmap.insert(&b"BF.EXISTS"[..], CmdType::Read);
+        hmap.insert(&b"BF.INFO"[..], CmdType::Read);
+        hmap.insert(&b"BF.INSERT"[..], CmdType::Write);
+        hmap.insert(&b"BF.LOADCHUNK"[..], CmdType::NotSupport);
+        hmap.insert(&b"BF.MADD"[..], CmdType::Write);
+        hmap.insert(&b"BF.MEXISTS"[..], CmdType::Read);
+        hmap.insert(&b"BF.RESERVE"[..], CmdType::Write);
+        hmap.insert(&b"BF.SCANDUMP"[..], CmdType::NotSupport);
+        // bloom filter type
+        hmap.insert(&b"CF.ADD"[..], CmdType::Write);
+        hmap.insert(&b"CF.ADDNX"[..], CmdType::Write);
+        hmap.insert(&b"CF.COUNT"[..], CmdType::Read);
+        hmap.insert(&b"CF.DEL"[..], CmdType::Write);
+        hmap.insert(&b"CF.EXISTS"[..], CmdType::Read);
+        hmap.insert(&b"CF.INFO"[..], CmdType::Read);
+        hmap.insert(&b"CF.INSERT"[..], CmdType::Write);
+        hmap.insert(&b"CF.INSERTNX"[..], CmdType::Write);
+        hmap.insert(&b"CF.LOADCHUNK"[..], CmdType::NotSupport);
+        hmap.insert(&b"CF.MEXISTS"[..], CmdType::Read);
+        hmap.insert(&b"CF.RESERVE"[..], CmdType::Write);
+        hmap.insert(&b"CF.SCANDUMP"[..], CmdType::NotSupport);
+
 
         hmap
     };
