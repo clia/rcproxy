@@ -175,7 +175,7 @@ lazy_static! {
         hmap.insert(&b"BF.MEXISTS"[..], CmdType::Read);
         hmap.insert(&b"BF.RESERVE"[..], CmdType::Write);
         hmap.insert(&b"BF.SCANDUMP"[..], CmdType::NotSupport);
-        // bloom filter type
+        // Cuckoo Filter commands.
         hmap.insert(&b"CF.ADD"[..], CmdType::Write);
         hmap.insert(&b"CF.ADDNX"[..], CmdType::Write);
         hmap.insert(&b"CF.COUNT"[..], CmdType::Read);
@@ -188,7 +188,36 @@ lazy_static! {
         hmap.insert(&b"CF.MEXISTS"[..], CmdType::Read);
         hmap.insert(&b"CF.RESERVE"[..], CmdType::Write);
         hmap.insert(&b"CF.SCANDUMP"[..], CmdType::NotSupport);
-
+        // Count-Min Sketch commands.
+        hmap.insert(&b"CMS.INCRBY"[..], CmdType::Write);
+        hmap.insert(&b"CMS.INFO"[..], CmdType::Read);
+        hmap.insert(&b"CMS.INITBYDIM"[..], CmdType::Write);
+        hmap.insert(&b"CMS.INITBYPROB"[..], CmdType::Write);
+        hmap.insert(&b"CMS.MERGE"[..], CmdType::Write);
+        hmap.insert(&b"CMS.QUERY"[..], CmdType::Read);
+        // TopK commands.
+        hmap.insert(&b"TOPK.ADD"[..], CmdType::Write);
+        hmap.insert(&b"TOPK.COUNT"[..], CmdType::Read);
+        hmap.insert(&b"TOPK.INCRBY"[..], CmdType::Write);
+        hmap.insert(&b"TOPK.INFO"[..], CmdType::Read);
+        hmap.insert(&b"TOPK.LIST"[..], CmdType::Read);
+        hmap.insert(&b"TOPK.QUERY"[..], CmdType::Read);
+        hmap.insert(&b"TOPK.RESERVE"[..], CmdType::Write);
+        // T-digest Sketch commands.
+        hmap.insert(&b"TDIGEST.ADD"[..], CmdType::Write);
+        hmap.insert(&b"TDIGEST.BYRANK"[..], CmdType::Read);
+        hmap.insert(&b"TDIGEST.BYREVRANK"[..], CmdType::Read);
+        hmap.insert(&b"TDIGEST.CDF"[..], CmdType::Read);
+        hmap.insert(&b"TDIGEST.CREATE"[..], CmdType::Write);
+        hmap.insert(&b"TDIGEST.INFO"[..], CmdType::Read);
+        hmap.insert(&b"TDIGEST.MAX"[..], CmdType::Read);
+        hmap.insert(&b"TDIGEST.MIN"[..], CmdType::Read);
+        hmap.insert(&b"TDIGEST.QUANTILE"[..], CmdType::Read);
+        hmap.insert(&b"TDIGEST.RANK"[..], CmdType::Read);
+        hmap.insert(&b"TDIGEST.REVRANK"[..], CmdType::Read);
+        hmap.insert(&b"TDIGEST.MERGE"[..], CmdType::Write);
+        hmap.insert(&b"TDIGEST.RESET"[..], CmdType::Write);
+        hmap.insert(&b"TDIGEST.TRIMMED_MEAN"[..], CmdType::Read);
 
         hmap
     };
