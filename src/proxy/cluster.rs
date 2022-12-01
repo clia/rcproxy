@@ -858,7 +858,8 @@ impl ConnBuilder {
 
 pub(crate) fn spawn(cc: ClusterConfig) {
     current_thread::block_on_all(
-        init::Initializer::new(cc).map_err(|err| error!("fail to init cluster due to {}", err)),
+        init::Initializer::new(cc)
+        // .map_err(|err| error!("fail to init cluster due to {}", err)),
     )
     .unwrap();
 }

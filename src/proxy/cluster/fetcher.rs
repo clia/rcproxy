@@ -166,7 +166,7 @@ where
                 State::Random => {
                     let position = self
                         .rng
-                        .gen_range(0, self.cluster.cc.borrow().servers.len());
+                        .gen_range(0..self.cluster.cc.borrow().servers.len());
                     let addr = self
                         .cluster
                         .cc

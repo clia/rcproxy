@@ -1,7 +1,9 @@
 /target
 **/target
-Cargo.lock
 **/*.rs.bk
 **/settings.json
 /logs
 .vscode
+.idea/
+log/
+/log

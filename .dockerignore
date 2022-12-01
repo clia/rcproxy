@@ -1,0 +1,11 @@
+/target
+**/target
+**/*.rs.bk
+**/settings.json
+/logs
+.vscode
+.idea/
+log/
+/log
+!target/release/rcproxy
+!target/x86_64-unknown-linux-musl/release/rcproxy

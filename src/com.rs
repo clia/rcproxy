@@ -203,6 +203,7 @@ impl Config {
     pub fn load<P: AsRef<Path>>(p: P) -> Result<Config, AsError> {
         let path = p.as_ref();
         let data = fs::read_to_string(path)?;
+        info!("load config data {}", data);
         let mut cfg: Config = toml::from_str(&data)?;
         let thread = Config::load_thread_from_env();
         for cluster in &mut cfg.clusters[..] {
