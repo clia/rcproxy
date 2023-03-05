@@ -79,6 +79,28 @@ impl Request for Cmd {
         cmd.into_cmd(notify)
     }
 
+    fn auth_request(auth: &str) -> Self {
+        let msg = Message::new_auth(auth);
+        let flags = CmdFlags::empty();
+        let mut notify = Notify::empty();
+        notify.set_expect(1);
+        let ctype = CmdType::get_cmd_type(&msg);
+
+        let cmd = Command {
+            flags,
+            ctype,
+            cycle: DEFAULT_CYCLE,
+            req: msg,
+            reply: None,
+            subs: None,
+
+            total_tracker: None,
+
+            remote_tracker: None,
+        };
+        cmd.into_cmd(notify)
+    }
+
     fn reregister(&mut self, task: Task) {
         self.notify.set_task(task);
     }

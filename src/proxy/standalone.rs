@@ -7,6 +7,7 @@ pub mod reload;
 
 use futures::future::ok;
 use futures::lazy;
+use futures::task;
 use futures::task::Task;
 use futures::unsync::mpsc::{channel, Sender};
 use futures::{AsyncSink, Future, Sink, Stream};
@@ -49,6 +50,7 @@ pub trait Request: Clone {
         + 'static;
 
     fn ping_request() -> Self;
+    fn auth_request(auth: &str) -> Self;
     fn reregister(&mut self, task: Task);
 
     fn key_hash(&self, hash_tag: &[u8], hasher: fn(&[u8]) -> u64) -> u64;
@@ -83,6 +85,7 @@ pub struct Cluster<T> {
     ring: RefCell<HashRing>,
     conns: RefCell<Conns<T>>,
     pings: RefCell<HashMap<String, Rc<Cell<bool>>>>,
+    auth: String,
 }
 
 impl<T: Request + 'static> Cluster<T> {
@@ -107,6 +110,7 @@ impl<T: Request + 'static> Cluster<T> {
                     ring: RefCell::new(HashRing::empty()),
                     conns: RefCell::new(Conns::default()),
                     pings: RefCell::new(HashMap::new()),
+                    auth: cc.auth.clone(),
                 };
                 let rc_cluster = Rc::new(cluster);
                 rc_cluster.reinit(cc).expect("fail to setup cluster");
@@ -340,12 +344,19 @@ impl<T: Request + 'static> Cluster<T> {
     pub(crate) fn add_node(&self, name: String) -> Result<(), AsError> {
         if let Some(weight) = self.spots.borrow().get(&name).cloned() {
             let addr = self.get_node(name.clone());
-            let conn = connect(
+            let mut conn = connect(
                 &self.cc.borrow().name,
                 &addr,
                 self.cc.borrow().read_timeout,
                 self.cc.borrow().write_timeout,
             )?;
+
+            if self.auth != "" {
+                let mut auth_cmd = T::auth_request(&self.auth);
+                auth_cmd.reregister(task::current());
+                let _ = conn.start_send(auth_cmd);
+            }
+
             self.conns.borrow_mut().insert(&addr, conn);
             self.ring.borrow_mut().add_node(name, weight);
         }
@@ -370,7 +381,15 @@ impl<T: Request + 'static> Cluster<T> {
             self.cc.borrow().read_timeout,
             self.cc.borrow().write_timeout,
         ) {
-            Ok(sender) => conns.insert(&addr, sender),
+            Ok(mut sender) => {
+                if self.auth != "" {
+                    let mut auth_cmd = T::auth_request(&self.auth);
+                    auth_cmd.reregister(task::current());
+                    let _ = sender.start_send(auth_cmd);
+                }
+
+                conns.insert(&addr, sender);
+            }
             Err(err) => {
                 error!("fail to reconnect to {} due {:?}", addr, err);
             }
@@ -401,12 +420,19 @@ impl<T: Request + 'static> Cluster<T> {
                 }
             } else {
                 debug!("dispatch_to trying to reconnect to {}", addr);
-                let sender = connect(
+                let mut sender = connect(
                     &self.cc.borrow().name,
                     &addr,
                     self.cc.borrow().read_timeout,
                     self.cc.borrow().write_timeout,
                 )?;
+
+                if self.auth != "" {
+                    let mut auth_cmd = T::auth_request(&self.auth);
+                    auth_cmd.reregister(task::current());
+                    let _ = sender.start_send(auth_cmd);
+                }
+
                 conns.insert(&addr, sender);
             }
         }
@@ -446,24 +472,38 @@ impl<T: Request + 'static> Cluster<T> {
                         let cmd = se.into_inner();
                         cmd.add_cycle();
                         cmds.push_front(cmd);
-                        let sender = connect(
+                        let mut sender = connect(
                             &self.cc.borrow().name,
                             &addr,
                             self.cc.borrow().read_timeout,
                             self.cc.borrow().write_timeout,
                         )?;
+
+                        if self.auth != "" {
+                            let mut auth_cmd = T::auth_request(&self.auth);
+                            auth_cmd.reregister(task::current());
+                            let _ = sender.start_send(auth_cmd);
+                        }
+
                         conns.insert(&addr, sender);
                         return Ok(count);
                     }
                 }
             } else {
                 cmds.push_front(cmd);
-                let sender = connect(
+                let mut sender = connect(
                     &self.cc.borrow().name,
                     &addr,
                     self.cc.borrow().read_timeout,
                     self.cc.borrow().write_timeout,
                 )?;
+
+                if self.auth != "" {
+                    let mut auth_cmd = T::auth_request(&self.auth);
+                    auth_cmd.reregister(task::current());
+                    let _ = sender.start_send(auth_cmd);
+                }
+
                 conns.insert(&addr, sender);
                 return Ok(count);
             }

@@ -65,6 +65,29 @@ impl Request for Cmd {
         }
     }
 
+    // FIXME
+    fn auth_request(_auth: &str) -> Self {
+        let cmd = Command {
+            ctype: CmdType::Auth,
+            flags: CmdFlags::empty(),
+            cycle: 0,
+
+            req: Message::version_request(),
+            reply: None,
+            subs: None,
+
+            total_tracker: None,
+
+            remote_tracker: None,
+        };
+        let mut notify = Notify::empty();
+        notify.set_expect(1);
+        Cmd {
+            cmd: Rc::new(RefCell::new(cmd)),
+            notify,
+        }
+    }
+
     fn reregister(&mut self, task: Task) {
         self.notify.set_task(task);
     }
