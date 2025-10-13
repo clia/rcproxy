@@ -1,11 +1,51 @@
-/target
+# 构建产物
+target/
 **/target
+
+# 备份文件
 **/*.rs.bk
-**/settings.json
-/logs
-.vscode
+
+# IDE配置
+.vscode/
 .idea/
+**/.settings.json
+
+# 日志文件
+logs/
 log/
 /log
-!target/release/rcproxy
-!target/x86_64-unknown-linux-musl/release/rcproxy
+*.log
+
+# Git文件
+.git/
+.gitignore
+.gitattributes
+
+# 文档和说明文件
+README.md
+CHANGELOG.md
+LICENSE
+*.md
+
+# CI/CD配置
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# 其他开发工具配置
+Makefile
+local-build.sh
+rustfmt.toml
+
+# 测试和基准测试（如果不需要在容器中运行）
+benches/
+
+# Docker相关
+Dockerfile
+.dockerignore
+
+# 临时文件
+*.swp
+*.swo
+*~
+.DS_Store

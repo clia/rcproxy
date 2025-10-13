@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  rcproxy:
+    image: clia/rcproxy:latest
+    container_name: rcproxy
+    ports:
+      - "9000:9000"
+    volumes:
+      # 挂载配置文件
+      - ./default.toml:/configs/default/default.toml:ro
+      # 挂载日志目录（可选）
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - redis-network
+    # 资源限制
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    # 健康检查
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "9000", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # 日志配置
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  redis-network:
+    driver: bridge
