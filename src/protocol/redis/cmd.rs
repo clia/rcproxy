@@ -160,7 +160,7 @@ lazy_static! {
         hmap.insert(&b"PROXY"[..], CmdType::NotSupport);
         hmap.insert(&b"SLOWLOG"[..], CmdType::NotSupport);
         hmap.insert(&b"QUIT"[..], CmdType::Ctrl);
-        hmap.insert(&b"SELECT"[..], CmdType::NotSupport);
+        hmap.insert(&b"SELECT"[..], CmdType::Select);
         hmap.insert(&b"TIME"[..], CmdType::NotSupport);
         hmap.insert(&b"CONFIG"[..], CmdType::NotSupport);
         hmap.insert(&b"CLUSTER"[..], CmdType::Ctrl);
@@ -304,6 +304,10 @@ impl CmdType {
         CmdType::Memory == self
     }
 
+    pub fn is_select(self) -> bool {
+        CmdType::Select == self
+    }
+
     pub fn need_auth(self) -> bool {
         self.is_read()
             || self.is_write()
@@ -316,6 +320,7 @@ impl CmdType {
             || self.is_read_all()
             || self.is_count_all()
             || self.is_scan()
+            || self.is_select()
     }
 
     pub fn get_cmd_type(msg: &Message) -> CmdType {

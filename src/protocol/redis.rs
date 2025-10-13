@@ -443,6 +443,9 @@ impl Command {
         } else if self.ctype.is_client() {
             buf.extend_from_slice(BYTES_JUSTOK);
             Ok(BYTES_JUSTOK.len())
+        } else if self.ctype.is_select() {
+            buf.extend_from_slice(BYTES_JUSTOK);
+            Ok(BYTES_JUSTOK.len())
         } else if self.ctype.is_mget() {
             if let Some(subs) = self.subs.as_ref() {
                 buf.extend_from_slice(BYTES_ARRAY);

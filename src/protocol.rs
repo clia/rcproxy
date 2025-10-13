@@ -53,6 +53,7 @@ pub enum CmdType {
     Module,   // Module
     Scan,     // Scan
     Memory,   // Memory
+    Select,   // Select
 
               // Keys,   // Read
               // DbSize, // Read
