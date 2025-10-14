@@ -38,7 +38,7 @@ local-build.sh
 rustfmt.toml
 
 # 测试和基准测试（如果不需要在容器中运行）
-benches/
+#benches/
 
 # Docker相关
 Dockerfile
