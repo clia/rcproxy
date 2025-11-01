@@ -9,6 +9,7 @@ COPY Cargo.toml Cargo.lock* ./
 
 # 复制源代码
 COPY src ./src
+COPY vendor ./vendor
 COPY bin ./bin
 COPY benches ./benches
 COPY cli.yml ./
