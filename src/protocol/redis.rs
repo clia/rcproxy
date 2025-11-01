@@ -398,8 +398,10 @@ const BYTES_JUSTOK: &[u8] = b"+OK\r\n";
 const BYTES_NULL_ARRAY: &[u8] = b"*-1\r\n";
 const BYTES_ZERO_INT: &[u8] = b":0\r\n";
 const BYTES_CMD_PING: &[u8] = b"PING";
+const BYTES_CMD_SELECT: &[u8] = b"SELECT";
 const BYTES_CMD_COMMAND: &[u8] = b"COMMAND";
 const BYTES_REPLY_NULL_ARRAY: &[u8] = b"*-1\r\n";
+const STR_REPLY_OK: &str = "OK";
 const STR_REPLY_PONG: &str = "PONG";
 const BYTES_CMD_INFO_KEYSPACE: &[u8] = b"*2\r\n$4\r\nINFO\r\n$8\r\nkeyspace\r\n";
 
@@ -1102,6 +1104,17 @@ impl From<MessageMut> for Cmd {
                 } else if data == BYTES_CMD_COMMAND {
                     cmd.set_reply(BYTES_REPLY_NULL_ARRAY);
                     cmd.unset_error();
+                } else if data == BYTES_CMD_SELECT {
+                    let is_zero = msg
+                        .nth(1)
+                        .and_then(|arg| btoi::btoi::<i64>(arg).ok())
+                        .map_or(false, |db| db == 0);
+                    if is_zero {
+                        cmd.set_reply(STR_REPLY_OK);
+                        cmd.unset_error();
+                    } else {
+                        trace!("unsupported SELECT db: {:?}", msg.nth(1));
+                    }
                 } else {
                     // unsupport commands
                     trace!("unsupport commands");
@@ -1358,6 +1371,36 @@ fn build_cluster_slots_reply() -> BytesMut {
     let mut data = BytesMut::new();
     data.extend_from_slice(reply.as_bytes());
     data
+}
+
+#[test]
+fn select_zero_returns_ok_reply() {
+    let mut buf = BytesMut::from("*2\r\n$6\r\nSELECT\r\n$1\r\n0\r\n");
+    let cmd = Command::parse_cmd(&mut buf).expect("parse").expect("command");
+
+    {
+        let guard = cmd.borrow();
+        assert!(guard.is_done(), "SELECT 0 should finish immediately");
+        let reply = guard.reply.as_ref().expect("reply");
+        assert_eq!(reply.data.as_ref(), b"+OK\r\n");
+    }
+
+    assert!(buf.is_empty(), "buffer should be fully consumed");
+}
+
+#[test]
+fn select_non_zero_is_rejected() {
+    let mut buf = BytesMut::from("*2\r\n$6\r\nSELECT\r\n$1\r\n1\r\n");
+    let cmd = Command::parse_cmd(&mut buf).expect("parse").expect("command");
+
+    assert!(buf.is_empty(), "buffer should be fully consumed");
+    assert!(!cmd.check_valid(), "SELECT on non-zero DB should be rejected");
+
+    let guard = cmd.borrow();
+    let reply = guard.reply.as_ref().expect("reply");
+    let payload = std::str::from_utf8(reply.data.as_ref()).expect("utf8");
+    assert!(payload.starts_with('-')); 
+    assert!(payload.contains("request not supported"), "unexpected reply: {}", payload);
 }
 
 #[test]

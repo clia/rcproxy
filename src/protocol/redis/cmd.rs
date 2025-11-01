@@ -160,7 +160,7 @@ lazy_static! {
         hmap.insert(&b"PROXY"[..], CmdType::NotSupport);
         hmap.insert(&b"SLOWLOG"[..], CmdType::NotSupport);
         hmap.insert(&b"QUIT"[..], CmdType::Ctrl);
-        hmap.insert(&b"SELECT"[..], CmdType::NotSupport);
+    hmap.insert(&b"SELECT"[..], CmdType::Ctrl);
         hmap.insert(&b"TIME"[..], CmdType::NotSupport);
         hmap.insert(&b"CONFIG"[..], CmdType::NotSupport);
         hmap.insert(&b"CLUSTER"[..], CmdType::Ctrl);
